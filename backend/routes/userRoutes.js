@@ -26,7 +26,9 @@ router.post("/register", async (req, res) => {
 
     await user.save((err, user) => {
       if (err) {
-        return res.status(401).json({ message: "User Not Registered!" });
+        return res
+          .status(401)
+          .json({ message: "User Not Registered!", error: err.message });
       }
       return res
         .status(201)
