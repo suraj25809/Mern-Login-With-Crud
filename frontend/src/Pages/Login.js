@@ -1,9 +1,45 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useState } from "react";
 import "../index.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Login = () => {
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const loginFormHandler = (event) => {
+    // console.log(event);
+    const { name, value } = event.target;
+    setUser({
+      ...user,
+      [name]: value,
+    });
+  };
+
+  const loginNow = () => {
+    const { email, password } = user;
+    if (email === "" || password === "") {
+      return toast.error("Fill All Details", { theme: "colored" });
+    }
+    axios
+      .post("http://localhost:5000/api/v1/user/login", user)
+      .then((res) => {
+        // console.log(res);
+        localStorage.setItem("userInfo", JSON.stringify(res.data.token));
+        toast.success("Login Successfully!!", {
+          theme: "colored",
+        });
+      })
+      .catch((err) => {
+        // console.error(err.response.data);
+        toast.error(err.response.data.message, { theme: "colored" });
+      });
+  };
+
   return (
     <div>
       <div className="container my-5 py-5">
@@ -15,22 +51,29 @@ const Login = () => {
               <form>
                 <div className="mb-4">
                   <input
+                    name="email"
+                    value={user.email}
                     type="email"
                     className="form-control"
                     placeholder="Enter Email Address"
+                    onChange={loginFormHandler}
                   />
                 </div>
                 <div className="mb-4">
                   <input
+                    name="password"
+                    value={user.password}
                     type="password"
                     className="form-control"
                     placeholder="Enter Password"
+                    onChange={loginFormHandler}
                   />
                 </div>
                 <button
                   type="button"
                   className="btn btn-primary"
                   style={{ width: "100%" }}
+                  onClick={loginNow}
                 >
                   Login Now
                 </button>

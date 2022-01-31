@@ -4,6 +4,7 @@ import Register from "./Pages/Register";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Dashboard from "./Dashboard/Dashboard";
 import NotFound from "./Pages/NotFound";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route component={NotFound} />
         </Switch>
       </Router>
+      <ToastContainer icon={false} />
     </div>
   );
 }

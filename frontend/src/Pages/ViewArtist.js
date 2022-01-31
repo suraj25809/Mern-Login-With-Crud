@@ -1,7 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export const ViewArtist = () => {
+  const [artist, setArtist] = useState([]);
+
+  const userInfo = localStorage.getItem("userInfo");
+  const config = {
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+  };
+
+  useEffect(() => {
+    getArtist();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getArtist = async () => {
+    axios
+      .get("http://localhost:5000/api/v1/artist", config)
+      .then((res) => {
+        console.log(res.data);
+        setArtist(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
   return (
     <React.Fragment>
       <div className="m-5">
@@ -19,11 +47,20 @@ export const ViewArtist = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
+            {
+              artist.map((data) => (
+                <tr key={data._id}>
+                  <td>
+                    <img src="../../../uploads/{{data.image}}" alt="artist" />{" "}
+                    {data.id}
+                  </td>
+                  <td>{data.artistname}</td>
+                  <td>Action</td>
+                </tr>
+              ))
+
+              // onClick={() => deleteData(data.id)}
+            }
           </tbody>
         </table>
       </div>

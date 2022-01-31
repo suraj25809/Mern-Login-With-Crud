@@ -34,28 +34,31 @@ const userRegister = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err.message);
-    return res.status(400).json("Server Error");
+    return res.status(401).json(err.message);
   }
 };
 
 const userLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
+    console.log(email, password);
     // if email and password not exist
     if (!email || !password) {
-      return res.status(401).json({ msg: "Please Enter Email and Password!" });
+      return res
+        .status(401)
+        .json({ message: "Enter Valid Email and Password!" });
     }
+
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ msg: "Invalid Email or Password!!" });
+      return res.status(401).json({ message: "Invalid Email or Password!!" });
     }
 
     let isMatch = bcrypt.compareSync(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ msg: "Invalid Email or Password!!" });
+      return res.status(401).json({ message: "Invalid Email or Password!!" });
     }
 
     if (user && isMatch) {
@@ -66,10 +69,10 @@ const userLogin = async (req, res, next) => {
       });
       console.log(user);
     } else {
-      res.status(401).json({ msg: "Invalid Email or Password" });
+      res.status(401).json({ message: "Invalid Email or Password" });
     }
   } catch (error) {
-    return res.status(400).json({ msg: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
