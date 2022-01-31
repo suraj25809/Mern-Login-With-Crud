@@ -59,6 +59,7 @@ const deleteArtistById = async (req, res) => {
 };
 
 const addArtist = async (req, res) => {
+  // console.log(req.body);
   try {
     const { artistname, biography, artistroles } = req.body;
     const artist = new Artist({
@@ -72,7 +73,9 @@ const addArtist = async (req, res) => {
     if (!artistData) {
       return res.status(401).json({ message: "Artist Not Added!!" });
     }
-    return res.status(201).json(artistData);
+    return res
+      .status(201)
+      .json({ message: "Artist Added Successfully!!", data: artistData });
   } catch (err) {
     console.log(err.message);
   }
