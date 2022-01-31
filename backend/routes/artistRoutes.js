@@ -31,7 +31,7 @@ const upload = multer({
 }).single("image");
 
 // fetch artist
-router.get("/", fetchAllArtist);
+router.get("/", protectRoute, fetchAllArtist);
 
 // fetch artist by id
 router.get("/:id", protectRoute, fetchArtsitById);

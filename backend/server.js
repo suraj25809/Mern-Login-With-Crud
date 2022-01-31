@@ -22,11 +22,14 @@ const port = process.env.PORT || 3000;
 
 // middleware
 app.use(morgan("dev"));
-app.use(cors());
 // app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.options(
+  "*",
+  cors({ origin: "http://localhost:3000", optionsSuccessStatus: 200 })
+);
+app.use(cors({ origin: "http://localhost:3000", optionsSuccessStatus: 200 }));
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "*");
 //   res.header(

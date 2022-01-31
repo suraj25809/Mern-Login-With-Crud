@@ -36,6 +36,7 @@ const fetchArtsitById = async (req, res) => {
 };
 
 const deleteArtistById = async (req, res) => {
+  console.log("delete operation");
   try {
     const artist = await Artist.findByIdAndRemove(req.params.id);
     if (!artist) {

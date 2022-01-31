@@ -4,8 +4,11 @@ import "../index.css";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
+  const history = useHistory();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -28,14 +31,13 @@ const Login = () => {
     axios
       .post("http://localhost:5000/api/v1/user/login", user)
       .then((res) => {
-        // console.log(res);
-        localStorage.setItem("userInfo", JSON.stringify(res.data.token));
+        localStorage.setItem("userInfo", res.data.token);
+        history.push("/viewartist");
         toast.success("Login Successfully!!", {
           theme: "colored",
         });
       })
       .catch((err) => {
-        // console.error(err.response.data);
         toast.error(err.response.data.message, { theme: "colored" });
       });
   };

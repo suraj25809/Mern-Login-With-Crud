@@ -3,22 +3,28 @@ const User = require("../models/userModel");
 
 // authenticates user before accessing specified route
 const protectRoute = async (req, res, next) => {
-  try {
-    // req.headers.authorization && req.headers.authorization.startsWith("Bearer");
-    const token = req.headers.authorization.split(" ")[1];
-    if (token) {
-      console.log(token);
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decoded);
-      req.user = await User.findById(decoded.id).select("-password");
-      console.log(req.user);
-      next();
-    } else {
-      res.status(401).json({ message: "Unauthorised Access Login Now!" });
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      // req.headers.authorization && req.headers.authorization.startsWith("Bearer");
+      const token = req.headers.authorization.split(" ")[1];
+      // console.log("pass1", token);
+      if (token) {
+        // console.log("pass", token);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // console.log(decoded);
+        req.user = await User.findById(decoded.id).select("-password");
+        // console.log(req.user);
+        next();
+      } else {
+        res.status(401).json({ message: "Unauthorised Access Login Now!" });
+      }
+    } catch (err) {
+      console.error(err.message);
+      return res.status(401).json({ message: "Unathorised Access" });
     }
-  } catch (err) {
-    console.error(err.message);
-    return res.status(401).json({ message: "Unathorised Access" });
   }
 };
 
