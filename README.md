@@ -10,6 +10,6 @@ In the project directory, you can run:
 
 Create a .env File file and paste this code 
 
-###PORT = 5000
-####JWT_SECRET = secret@123456789
-#####MONGO_URI = mongodb://localhost:27017/merntask
+### `PORT = 5000`
+### `JWT_SECRET = secret@123456789`
+### `MONGO_URI = mongodb://localhost:27017/merntask`
